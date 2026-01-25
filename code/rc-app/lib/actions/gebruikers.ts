@@ -142,14 +142,10 @@ export async function generateQRLoginToken(gebruikerId: number) {
     // Generate a unique token
     const token = crypto.randomBytes(32).toString('hex')
 
-    // Set expiration time to 5 minutes from now
-    const vervalTijd = new Date(Date.now() + 5 * 60 * 1000)
-
     // Create QR login entry
     const qrLogin = await prisma.qRLogin.create({
       data: {
         token,
-        vervalTijd,
         gebruikerId,
       },
     })

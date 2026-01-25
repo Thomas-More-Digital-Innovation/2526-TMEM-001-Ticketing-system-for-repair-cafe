@@ -76,24 +76,8 @@ export async function loginWithQRToken(token: string) {
     })
 
     if (!qrLogin) {
-      return { success: false, error: 'Ongeldige of verlopen QR code' }
+      return { success: false, error: 'Ongeldige QR code' }
     }
-
-    // Check if token is expired
-    if (qrLogin.vervalTijd < new Date()) {
-      return { success: false, error: 'QR code is verlopen' }
-    }
-
-    // Check if token was already used
-    if (qrLogin.isGebruiktTijd) {
-      return { success: false, error: 'QR code is al gebruikt' }
-    }
-
-    // Mark token as used
-    await prisma.qRLogin.update({
-      where: { qrLoginId: qrLogin.qrLoginId },
-      data: { isGebruiktTijd: new Date() },
-    })
 
     // Create session
     const session = await prisma.sessie.create({

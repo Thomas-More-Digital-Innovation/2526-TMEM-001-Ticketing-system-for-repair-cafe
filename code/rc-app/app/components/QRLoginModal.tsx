@@ -72,7 +72,7 @@ export default function QRLoginModal({
           </p>
 
           <p className="text-white font-inter text-sm font-normal leading-[18px] tracking-[-0.28px] text-center">
-            Deze code is 5 minuten geldig
+            Deze code heeft geen vervaldatum
           </p>
         </div>
 

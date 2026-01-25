@@ -41,8 +41,6 @@ model Sessie {
 model QRLogin {
   qrLoginId     Int       @id @default(autoincrement())
   token         String    @unique
-  vervalTijd    DateTime
-  isGebruiktTijd DateTime?
   gebruikerId   Int
   gebruiker     Gebruiker @relation(fields: [gebruikerId], references: [gebruikerId])
 }
