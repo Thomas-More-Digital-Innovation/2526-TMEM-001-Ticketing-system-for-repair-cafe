@@ -76,16 +76,24 @@ async function main() {
       naam: 'Student',
     },
   })
+  
+  const docentKlantType = await prisma.klantType.upsert({
+    where: { klantTypeId: 2 },
+    update: {},
+    create: {
+      naam: 'Docent',
+    },
+  })
 
   const externeKlantType = await prisma.klantType.upsert({
-    where: { klantTypeId: 2 },
+    where: { klantTypeId: 3 },
     update: {},
     create: {
       naam: 'Externe',
     },
   })
 
-  console.log('Created klant types:', { studentKlantType, externeKlantType })
+  console.log('Created klant types:', { studentKlantType, docentKlantType, externeKlantType })
 
   // Seed Afdeling
   const elektronica = await prisma.afdeling.upsert({

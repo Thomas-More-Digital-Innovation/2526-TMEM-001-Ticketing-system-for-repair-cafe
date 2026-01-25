@@ -23,10 +23,28 @@ export default function RegisterItemPage() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const customerTypes = [
-    { value: 'Externe', label: 'Externe' },
-    { value: 'Student', label: 'Student' }
-  ];
+  const [customerTypes, setCustomerTypes] = useState<Array<{ value: string; label: string }>>([]);
+
+  useEffect(() => {
+    // Fetch klant types using server action
+    const fetchKlantTypes = async () => {
+      try {
+        const { getKlantTypesForClient } = await import('@/lib/actions/klantTypes');
+        const data = await getKlantTypesForClient();
+        const options = data.map((t: any) => ({
+          value: t.klantTypeId.toString(),
+          label: t.naam,
+        }));
+        setCustomerTypes(options);
+        if (options.length > 0) {
+          setFormData(prev => prev.customerType ? prev : ({ ...prev, customerType: options[0].value }));
+        }
+      } catch (err) {
+        console.error('Error fetching klant types:', err);
+      }
+    };
+    fetchKlantTypes();
+  }, []);
 
   useEffect(() => {
     // Fetch departments using server action
