@@ -22,8 +22,8 @@ export default function StudentPage() {
     console.log('QR code scanned:', data);
     setShowQRScanner(false);
     
-    // Validate the scanned data
-    const trimmedData = data.trim();
+    // Validate the scanned data and force uppercase
+    const trimmedData = data.trim().toUpperCase();
     if (!trimmedData) {
       setError('Ongeldige QR code gescand');
       return;
@@ -46,8 +46,8 @@ export default function StudentPage() {
       return;
     }
 
-    // Navigate directly - let server component handle validation
-    router.push(`/student/handle/${trackingNumber}`);
+    // Navigate directly - ensure uppercase and trim
+    router.push(`/student/handle/${trackingNumber.trim().toUpperCase()}`);
   };
 
   return (
@@ -86,7 +86,7 @@ export default function StudentPage() {
             placeholder="H78K"
             required
             value={trackingNumber}
-            onChange={(e) => { setTrackingNumber(e.target.value); setError(''); }}
+            onChange={(e) => { setTrackingNumber(e.target.value.toUpperCase()); setError(''); }}
           />
           <Button variant="primary" type="submit" className="mt-2">
             Voorwerp behandelen
