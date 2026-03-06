@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: ghcr.io/thomas-more-digital-innovation/2526-tmem-001-ticketing-system-for-repair-caf--rc-app
+  repository: ghcr.io/thomas-more-digital-innovation/2526-tmem-001-ticketing-system-for-repair-cafe--rc-app
   pullPolicy: Always
   tag: latest
 
