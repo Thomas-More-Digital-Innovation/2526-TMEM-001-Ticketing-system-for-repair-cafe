@@ -17,12 +17,28 @@ interface GroupedVoorwerpen {
   klaar: Voorwerp[];
 }
 
+const EMPTY_GROUPED_ITEMS: GroupedVoorwerpen = {
+  afgeleverd: [],
+  inBehandeling: [],
+  klaar: []
+};
+
+function normalizeGroupedVoorwerpen(data: unknown): GroupedVoorwerpen {
+  if (!data || typeof data !== 'object') {
+    return EMPTY_GROUPED_ITEMS;
+  }
+
+  const grouped = data as Partial<GroupedVoorwerpen>;
+
+  return {
+    afgeleverd: Array.isArray(grouped.afgeleverd) ? grouped.afgeleverd : [],
+    inBehandeling: Array.isArray(grouped.inBehandeling) ? grouped.inBehandeling : [],
+    klaar: Array.isArray(grouped.klaar) ? grouped.klaar : []
+  };
+}
+
 export default function ClientView() {
-  const [items, setItems] = useState<GroupedVoorwerpen>({
-    afgeleverd: [],
-    inBehandeling: [],
-    klaar: []
-  });
+  const [items, setItems] = useState<GroupedVoorwerpen>(EMPTY_GROUPED_ITEMS);
   const [isLoading, setIsLoading] = useState(true);
   const { socket, isConnected } = useSocket();
   const scrollIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -34,9 +50,17 @@ export default function ClientView() {
         // Public endpoint for customer display
         const response = await fetch('/api/voorwerpen/status');
         const data = await response.json();
-        setItems(data);
+
+        if (!response.ok) {
+          console.error('Error response fetching items:', data);
+          setItems(EMPTY_GROUPED_ITEMS);
+          return;
+        }
+
+        setItems(normalizeGroupedVoorwerpen(data));
       } catch (error) {
         console.error('Error fetching items:', error);
+        setItems(EMPTY_GROUPED_ITEMS);
       } finally {
         setIsLoading(false);
       }
@@ -47,9 +71,9 @@ export default function ClientView() {
 
     // Listen for WebSocket updates
     if (socket) {
-      socket.on('voorwerpen-updated', (data: GroupedVoorwerpen) => {
+      socket.on('voorwerpen-updated', (data: unknown) => {
         console.log('Received WebSocket update');
-        setItems(data);
+        setItems(normalizeGroupedVoorwerpen(data));
       });
 
       return () => {

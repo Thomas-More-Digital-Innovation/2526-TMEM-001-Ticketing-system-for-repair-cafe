@@ -191,12 +191,17 @@ export async function registerVoorwerp(data: RegisterVoorwerpInput) {
       afdelingId = defaultAfdeling?.afdelingId || 1
     }
 
-    // Find active cafedag (current date is between start and end)
+    // Find active cafedag (cafedag overlaps with today)
     const now = new Date()
+    const startOfToday = new Date(now)
+    startOfToday.setHours(0, 0, 0, 0)
+    const endOfToday = new Date(now)
+    endOfToday.setHours(23, 59, 59, 999)
+
     const activeCafedag = await prisma.cafedag.findFirst({
       where: {
-        startDatum: { lte: now },
-        eindDatum: { gte: now },
+        startDatum: { lte: endOfToday },
+        eindDatum: { gte: startOfToday },
       },
     })
 
