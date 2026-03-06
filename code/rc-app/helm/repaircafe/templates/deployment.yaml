@@ -33,7 +33,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       initContainers:
-        - name: wait-for-postgres
+        - name: wait-for-db
           image: "{{ .Values.postgres.image.repository }}:{{ .Values.postgres.image.tag }}"
           imagePullPolicy: {{ .Values.postgres.image.pullPolicy }}
           command:
@@ -62,12 +62,10 @@ spec:
               protocol: TCP
           env:
             - name: DATABASE_URL
-              value: "postgresql://{{ .Values.postgres.auth.username }}:$(POSTGRES_PASSWORD)@{{ include "repaircafe.postgresHost" . }}:{{ .Values.postgres.service.port }}/{{ .Values.postgres.auth.database }}?schema=public"
-            - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ include "repaircafe.postgresSecretName" . }}
-                  key: password
+                  key: databaseUrl
             - name: SESSION_SECRET
               valueFrom:
                 secretKeyRef:
