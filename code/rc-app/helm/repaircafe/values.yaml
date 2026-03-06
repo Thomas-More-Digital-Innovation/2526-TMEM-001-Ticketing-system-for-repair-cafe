@@ -92,6 +92,7 @@ app:
 
 postgres:
   enabled: true
+  pgData: /var/lib/postgresql/data/pgdata
   image:
     repository: postgres
     tag: 16-alpine

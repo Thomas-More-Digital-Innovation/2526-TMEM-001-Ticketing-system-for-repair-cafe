@@ -23,6 +23,8 @@ spec:
           image: "{{ .Values.postgres.image.repository }}:{{ .Values.postgres.image.tag }}"
           imagePullPolicy: {{ .Values.postgres.image.pullPolicy }}
           env:
+            - name: PGDATA
+              value: {{ .Values.postgres.pgData | quote }}
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
