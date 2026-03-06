@@ -59,19 +59,13 @@ services:
     environment:
       # Database
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/repaircafe?schema=public
+      APP_ENV: ${APP_ENV:-prod}
       
       # Node environment
       NODE_ENV: production
     volumes:
       # Mount uploads directory for local file storage
       - public_uploads:/app/public/uploads
-    entrypoint: ["/bin/sh", "-c"]
-    command:
-      - |
-        echo 'Waiting for database...'
-        sleep 5
-        echo 'Starting application...'
-        node server.js
     labels:
       # Traefik routing
       - "traefik.enable=true"

@@ -27,6 +27,7 @@ FROM node:20-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
+ENV APP_ENV=prod
 
 # Install openssl for Prisma
 RUN apk add --no-cache openssl
@@ -55,5 +56,5 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-# Run migrations and seed before starting the server
-CMD ["/bin/sh", "-c", "npx prisma migrate deploy && npx prisma db seed && node server.js"]
+# Run migrations and seed only in production mode
+CMD ["/bin/sh", "-c", "if [ \"$APP_ENV\" = \"prod\" ]; then npx prisma migrate deploy && npx prisma db seed; fi && node server.js"]

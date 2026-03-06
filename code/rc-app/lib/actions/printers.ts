@@ -98,7 +98,7 @@ export async function createPrintJob(data: {
   printData?: any // Additional JSON data (e.g., payment details, materials)
 }) {
   try {
-    await getServerActionUser(['Admin'])
+    await getServerActionUser(['Admin', 'Balie', 'Student'])
 
     const printJob = await prisma.printJob.create({
       data: {
