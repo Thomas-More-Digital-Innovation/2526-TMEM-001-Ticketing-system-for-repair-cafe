@@ -32,7 +32,11 @@ jobs:
         run: |
           CHART_NAME="$(helm show chart "$CHART_DIR" | awk -F': ' '/^name:/ {print $2; exit}')"
           CHART_VERSION="$(helm show chart "$CHART_DIR" | awk -F': ' '/^version:/ {print $2; exit}')"
-          OCI_REPO="ghcr.io/${GITHUB_REPOSITORY,,}/charts"
+          OWNER="${GITHUB_REPOSITORY_OWNER,,}"
+          REPO="${GITHUB_REPOSITORY#*/}"
+          REPO="${REPO,,}"
+          while [[ "$REPO" =~ [._-]$ ]]; do REPO="${REPO%?}"; done
+          OCI_REPO="ghcr.io/$OWNER/$REPO/charts"
 
           echo "chart_name=$CHART_NAME" >> "$GITHUB_OUTPUT"
           echo "chart_version=$CHART_VERSION" >> "$GITHUB_OUTPUT"
