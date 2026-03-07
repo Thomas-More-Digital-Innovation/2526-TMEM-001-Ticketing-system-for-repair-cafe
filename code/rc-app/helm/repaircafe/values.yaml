@@ -89,6 +89,7 @@ app:
     enabled: true
     size: 5Gi
     storageClassName: ""
+    subPath: uploads
 
 postgres:
   enabled: true
