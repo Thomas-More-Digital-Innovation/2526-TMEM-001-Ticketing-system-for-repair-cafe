@@ -54,7 +54,7 @@ spec:
           command:
             - /bin/sh
             - -c
-            - mkdir -p /uploads/{{ .Values.app.uploads.subPath }} && chmod 755 /uploads/{{ .Values.app.uploads.subPath }}
+            - mkdir -p /uploads/{{ default "uploads" .Values.app.uploads.subPath }} && chmod 755 /uploads/{{ default "uploads" .Values.app.uploads.subPath }}
           volumeMounts:
             - name: uploads
               mountPath: /uploads
@@ -102,7 +102,7 @@ spec:
           volumeMounts:
             - name: uploads
               mountPath: /app/public/uploads
-              subPath: {{ .Values.app.uploads.subPath | quote }}
+              subPath: {{ default "uploads" .Values.app.uploads.subPath | quote }}
           {{- end }}
       {{- if .Values.app.uploads.enabled }}
       volumes:
