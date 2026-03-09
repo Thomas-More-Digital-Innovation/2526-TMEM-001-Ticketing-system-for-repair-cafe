@@ -1,0 +1,2 @@
+ALTER TABLE "Cafedag"
+ADD COLUMN "inactive" BOOLEAN NOT NULL DEFAULT false;

@@ -35,6 +35,7 @@ export async function createGebruiker(data: CreateGebruikerInput) {
 
       const activeCafedag = await prisma.cafedag.findFirst({
         where: {
+          inactive: false,
           startDatum: { lte: endOfToday },
           eindDatum: { gte: startOfToday },
         },

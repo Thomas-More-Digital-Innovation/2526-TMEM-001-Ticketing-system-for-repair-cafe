@@ -200,6 +200,7 @@ export async function registerVoorwerp(data: RegisterVoorwerpInput) {
 
     const activeCafedag = await prisma.cafedag.findFirst({
       where: {
+        inactive: false,
         startDatum: { lte: endOfToday },
         eindDatum: { gte: startOfToday },
       },

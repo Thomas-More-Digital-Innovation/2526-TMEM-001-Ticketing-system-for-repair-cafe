@@ -4,6 +4,9 @@ import prisma from '@/lib/prisma'
 export async function getCafedagen() {
   try {
     const cafedagen = await prisma.cafedag.findMany({
+      where: {
+        inactive: false,
+      },
       include: {
         cafe: true,
       },

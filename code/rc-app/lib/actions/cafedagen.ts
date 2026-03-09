@@ -156,8 +156,9 @@ export async function deleteCafedag(cafedagId: number) {
     try {
         await getServerActionUser(['Admin'])
 
-        await prisma.cafedag.delete({
+        await prisma.cafedag.update({
             where: { cafedagId },
+            data: { inactive: true },
         })
 
         revalidatePath('/admin/cafedagen')

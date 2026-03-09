@@ -59,6 +59,7 @@ model Cafedag {
   cafeId          Int
   startDatum      DateTime
   eindDatum       DateTime
+  inactive        Boolean         @default(false)
   cafe            Cafe            @relation(fields: [cafeId], references: [cafeId])
   cafedagVoorwerp Cafedagvoorwerp[]
 }
